@@ -1,0 +1,185 @@
+{
+  "log": {
+	"access": "/var/log/v2ray/access.log",
+	"error": "/var/log/v2ray/error.log",
+	"loglevel": "warning"
+  },
+  "inbounds": [
+	{
+		"port": 6608,
+		"protocol": "vmess",
+		"settings": {
+			"clients": [
+				{
+					"id": "9f5f3062-7b5e-4227-a3be-6af77268b4fa",
+					"level": 1,
+					"alterId": 233
+				}
+			],
+			"detour": {
+				"to": "dynamic"
+			}
+		},
+		"streamSettings": {
+			"network": "tcp"
+		},
+		"sniffing": {
+			"enabled": true,
+			"destOverride": [
+				"http",
+				"tls"
+			]
+		}
+	},
+        {
+            "protocol": "vmess",
+            "port": "6601-6607",
+            "tag": "dynamic",
+            "settings": {
+                "default": {
+                    "level": 1,
+                    "alterId": 32
+                }
+            },
+            "allocate": {
+                "strategy": "random",
+                "concurrency": 2,
+                "refresh": 5
+            }
+        }
+	,
+        {
+            "protocol": "shadowsocks",
+            "port": 6609,
+            "settings": {
+                "method": "chacha20",
+                "password": "xlm104600",
+                "network": "tcp,udp",
+                "level": 1,
+                "ota": false
+	    }
+	},
+
+    {
+      "tag": "proxy",
+      "port": 1080,
+      "listen": "127.0.0.1",
+      //"protocol": "socks",
+      "protocol": "http",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ]
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "ip": null,
+        "address": null,
+        "clients": null
+      },
+      "streamSettings": null
+    }
+  ],
+  "outbounds": [
+    //{
+    //  "tag": "proxy",
+    //  "protocol": "vmess",
+    //  "settings": {
+    //    "vnext": [
+    //      {
+    //        "address": "sictiyleon.xyz",
+    //        "port": 443,
+    //        "users": [
+    //          {
+    //            "id": "824ff222-f025-4cec-9fb5-48df4ebeec57",
+    //            "alterId": 233,
+    //            "email": "t@t.tt",
+    //            "security": "auto"
+    //          }
+    //        ]
+    //      }
+    //    ],
+    //    "servers": null,
+    //    "response": null
+    //  },
+    //  "streamSettings": {
+    //    "network": "ws",
+    //    "security": "tls",
+    //    "tlsSettings": {
+    //      "allowInsecure": true,
+    //      "serverName": "sictiyleon.xyz"
+    //    },
+    //    "tcpSettings": null,
+    //    "kcpSettings": null,
+    //    "wsSettings": {
+    //      "connectionReuse": true,
+    //      "path": "/abcaa",
+    //      "headers": {
+    //        "Host": "sictiyleon.xyz"
+    //      }
+    //    },
+    //    "httpSettings": null,
+    //    "quicSettings": null
+    //  },
+    //  "mux": {
+    //    "enabled": true,
+    //    "concurrency": 8
+    //  }
+    {
+      "tag": "proxy",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "35.241.*.*",
+            "port": 6608,
+            "users": [
+              {
+                "id": "9f5f3062-7b5e-4227-a3be-6af77268b4fa",
+                "alterId": 233,
+                "email": "t@t.tt",
+                "security": "auto"
+              }
+            ]
+          }
+        ],
+        "servers": null,
+        "response": null
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": null,
+        "tlsSettings": null,
+        "tcpSettings": null,
+        "kcpSettings": null,
+        "wsSettings": null,
+        "httpSettings": null,
+        "quicSettings": null
+      },
+      "mux": {
+        "enabled": true,
+        "concurrency": 8
+      }
+  },{
+    "protocol": "freedom",
+    "tag": "direct",
+    "settings": {}
+  },{
+    "protocol": "blackhole",
+    "settings": {},
+    "tag": "blocked"
+  }],
+  "routing": {
+    "domainStrategy": "IPOnDemaond",
+    "rules": [
+      {
+        "type": "field",
+        "ip": ["geoip:private"],
+        "outboundTag": "direct"
+      }
+    ]
+  }
+}
